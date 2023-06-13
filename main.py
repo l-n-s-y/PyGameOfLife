@@ -65,9 +65,10 @@ def check_neighbours(grid,x,y):
                 pass
     return total_neighbours
 
-currentFPS = 800
+current_fps = 800
+start_grid = []
 while True:
-    pygame.time.Clock().tick(currentFPS)
+    pygame.time.Clock().tick(current_fps)
     for event in pygame.event.get():
         if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_q:
             exit()
@@ -75,19 +76,30 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 if drawing:
+                    start_grid = grid
                     pygame.display.set_caption(run_caption)
-                    currentFPS = 10
+                    current_fps = 10
                     drawing = False
                 else:
                     pygame.display.set_caption(draw_caption)
-                    currentFPS = 800
+                    current_fps = 800
                     drawing = True
 
-            if event.key == pygame.K_UP:
-                currentFPS += 5
-            if event.key == pygame.K_DOWN:
-                currentFPS -= 5
-                currentFPS = max(1,currentFPS)
+
+            if drawing:
+                if event.key == pygame.K_g:
+                    grid = [[0 for x in range(column_count)] for y in range(row_count)]
+
+                if event.key == pygame.K_t:
+                    grid = start_grid
+
+            else:
+                if event.key == pygame.K_UP:
+                    current_fps += 5
+                if event.key == pygame.K_DOWN:
+                    current_fps -= 5
+                    current_fps = max(1,current_fps)               
+
 
     if (drawing):
         x_pos,y_pos = pygame.mouse.get_pos()
