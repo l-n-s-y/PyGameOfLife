@@ -6,11 +6,11 @@ pygame.display.set_caption("Drawing Board. (PRESS ESC TO RUN) ")
 
 drawing = True
 
-column_count = 100
-row_count = 100
+column_count = 50
+row_count = 50
 
-cell_height = size[1]//row_count
-cell_width = size[0]//column_count
+cell_height = round(size[1]/row_count)
+cell_width = round(size[0]/column_count)
 
 
 grid = [[0 for x in range(column_count)] for y in range(row_count)]
@@ -70,7 +70,7 @@ while True:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                pygame.display.set_caption("Running Game of Life...")
+                pygame.display.set_caption("Running Game of Life... (UP AND DOWN CHANGE SPEED)")
                 currentFPS = 10
                 drawing = False
 
@@ -81,14 +81,20 @@ while True:
                 currentFPS = max(1,currentFPS)
 
     if (drawing):
-        if pygame.mouse.get_pressed()[0]: #LMB Down
-            x_pos,y_pos = pygame.mouse.get_pos()
-            
-            x_index = int(x_pos//cell_width)
-            y_index = int(y_pos//cell_height)
+        x_pos,y_pos = pygame.mouse.get_pos()
+        
+        x_index = int(x_pos//cell_width)
+        y_index = int(y_pos//cell_height)
 
+        if pygame.mouse.get_pressed()[0]: #LMB Down
             try:
                 grid[y_index][x_index] = 1
+            except:
+                pass
+
+        if pygame.mouse.get_pressed()[2]:
+            try:
+                grid[y_index][x_index] = 0
             except:
                 pass
     else:
