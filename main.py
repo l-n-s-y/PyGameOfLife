@@ -2,7 +2,11 @@ import pygame
 
 size = (512,512)
 screen = pygame.display.set_mode(size)
-pygame.display.set_caption("Drawing Board. (PRESS ESC TO RUN) ")
+
+draw_caption = "Drawing Board. (PRESS ESC TO RUN)"
+run_caption = "Running Game of Life... (UP AND DOWN CHANGE SPEED)"
+
+pygame.display.set_caption(draw_caption)
 
 drawing = True
 
@@ -52,9 +56,9 @@ def check_neighbours(grid,x,y):
     total_neighbours = 0
     for i in range(-1,2):
         for j in range(-1,2):
-            if (y+i < 0) or (y+i > row_count): continue
-            if (x+j < 0) or (x+j > column_count): continue
-            if (y+i == y) and (x+j == x): continue
+            if (y+i < 0) or (y+i > row_count): continue # Horizontal offscreen
+            if (x+j < 0) or (x+j > column_count): continue # Vertical offscreen
+            if (y+i == y) and (x+j == x): continue # Self reflection
             try:
                 total_neighbours += grid[y+i][x+j]
             except:
@@ -70,9 +74,14 @@ while True:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                pygame.display.set_caption("Running Game of Life... (UP AND DOWN CHANGE SPEED)")
-                currentFPS = 10
-                drawing = False
+                if drawing:
+                    pygame.display.set_caption(run_caption)
+                    currentFPS = 10
+                    drawing = False
+                else:
+                    pygame.display.set_caption(draw_caption)
+                    currentFPS = 800
+                    drawing = True
 
             if event.key == pygame.K_UP:
                 currentFPS += 5
